@@ -15,14 +15,14 @@ more familiar again.
 
 * The main page is the project feed where we can search for random projects in our proximity or for
 projects that suit our preferences.
-    * Sub Inside these projects we can discuss the details in a public comment section. If the creator of the project finds our ideas interesting, he can invite us to
+    * Inside these projects we can discuss the details in a public comment section. If the creator of the project finds our ideas interesting, he can invite us to
 be part of the project, then we are able to discuss the project in a separate comment section.
-    * Sub We can also filter, if we are interested in participating in planning the event or if we
+    * We can also filter, if we are interested in participating in planning the event or if we
     merely want to help.
-    * Sub More detailed filter, i.e. which topics we prefer or the extend of the project size are also
+    * More detailed filter, i.e. which topics we prefer or the extend of the project size are also
     possible
 * Similar to the project feed we do also offer a feed for discussions
-    * Sub Again, we can apply filter or we change the feed to an "Engagement feed" so that we can
+    * Again, we can apply filter or we change the feed to an "Engagement feed" so that we can
     discover associations close to us, which might interest us
 * All three types can be created by yourself in the "Create New" part. There we offer templates so that
 people can make use of concepts or structures which have been used successfully in the past. This makes
@@ -50,7 +50,9 @@ Only the most recent Android Studio and an emulator are needed. No specialities.
 Some screenshot to get an idea of the project.
 
 The main project feed | The detailed view of one project
-:-----:|:----:
-<img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_feed.png" width="300" height=580" > | <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_view.png" width="300" height=580">
+:-------------------------:|:-------------------------:
+<img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_feed.png" width="300" height=580" >
+                                                                                                                                <img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_feed.png?raw=true" width="300" height="580">
+                                                                                                                                | <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_view.png" width="300" height=580">
 The profile view | The view while creating a new project
 <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_profile.png" width="300" height=580"> | <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_create_new.png" width="300" height=580">
