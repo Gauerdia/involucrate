@@ -12,12 +12,17 @@ class Routing1Screen extends StatefulWidget {
 class _Routing1ScreenState extends State<Routing1Screen> {
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: TextButton(
-        child: Text("Test"),
+        child: Scaffold(
+          appBar: AppBar(title: Text("fefe")),
+          body: Text("e3ffef")
+        ),//_buildTest(),//Text("Test"),
         onPressed: (){routeToTest2(context);},
       ),
     );
+
   }
 
   void routeToTest2(BuildContext context){
@@ -26,4 +31,20 @@ class _Routing1ScreenState extends State<Routing1Screen> {
       MaterialPageRoute(builder: (context) => Routing2Screen()),
     );
   }
+
+  Widget _buildTest(){
+    return Container(
+      width: 100,
+      height: 50,
+      color: Colors.green,
+      child: Column(
+        children: [
+          Text("frgr"),
+          Text("ferf"),
+          Text("fefe")
+        ],
+      )
+    );
+  }
+
 }

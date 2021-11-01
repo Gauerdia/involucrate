@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:involucrate/util/router.dart';
-import 'package:involucrate/views/feed/feed_screen.dart';
+import 'package:involucrate/views/project_feed/project_feed_screen.dart';
 import 'package:involucrate/views/main_screen.dart';
 
 class Splash extends StatefulWidget {
@@ -42,7 +42,7 @@ class _SplashState extends State<Splash> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              "assets/images/project1.png",
+              "assets/images/splash_1.png",
               height: 300.0,
               width: 300.0,
             ),

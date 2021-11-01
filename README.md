@@ -4,11 +4,17 @@ Platform concept to structure project ideas, concepts and engagement possibiliti
 
 # TODOs:
 
-- Kai ought to familiarize himself with the code and play around with the programming language
-  and the possibilities/limits.
-- All the functionalities we talked about and recorded in notion are supposed to be implemented.
-  In the first place the UI is not that important. We will choose a uniform UI later on. Right now
-  the most important part is programming all the logic.
+
+-   Settings kann sein, ob man seinen Namen anonymisieren möchte, Newsletter
+
+-   Anonymisierte Profile im öffentlichen Kommentarbereich, Namen im internen
+
+-   Feed: Hintergrundfarbe, abhängig, ob noch in Planung oder abgeschlossen
+-   Calendar -> Filter
+
+-   Every Sunday -> Tags anzeigen
+
+
 - The Drawer does not lead anywhere yet. We should implement the function in a way that the pageView
   is being updated to show the profile while the bottomNavBar stays the same. We can also discuss, if
   it would not be better to lead to a completely new page for the profile. I am looking at reddit and see

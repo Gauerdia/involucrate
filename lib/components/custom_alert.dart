@@ -48,7 +48,7 @@ class CustomAlert extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {},
                             child: Card(
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
