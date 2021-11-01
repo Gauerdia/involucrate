@@ -51,7 +51,7 @@ Some screenshot to get an idea of the project.
 
 The feed of the platform            |  The middle part of the profile page
 :-------------------------:|:-------------------------:
-<img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_feed.png?raw=true" width="300" height="580">  |  <img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_profile.png?raw=true" width="300" height="580">
+<img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_feed.png?raw=true" width="300" height="580">  |  <img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_profile.png?raw=true" width="300" height="580">
 The messaging functionality         |  The commenting functionality
 <img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_messaging.png?raw=true" width="300" height="580">  |  <img src="https://github.com/Gauerdia/plantopia/blob/master/readme_content/screenshot_commenting.png?raw=true" width="300" height="580">
 
