@@ -51,6 +51,6 @@ Some screenshot to get an idea of the project.
 
 The main project feed | The detailed view of one project
 :-------------------------:|:-------------------------:
-<img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_feed.png?raw=true" width="300" height="580">  |  <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_view.png?raw=true" width="300" height="580">
+<img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_feed.png?raw=true" width="300" height="680">  |  <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_project_view.png?raw=true" width="300" height="680">
 The profile view | The view while creating a new project
 <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_profile.png?raw=true" width="300" height="580">  |  <img src="https://github.com/Gauerdia/involucrate/blob/master/assets/images/screenshot_create_new.png?raw=true" width="300" height="580">
