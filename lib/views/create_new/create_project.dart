@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:involucrate/components/test_tab_header.dart';
 import 'package:involucrate/model/project_list_data.dart';
 import 'package:involucrate/model/template_project_data.dart';
@@ -738,6 +739,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 return Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 8),
@@ -748,13 +750,49 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             ),
                           ),
                         ),
+
+                        // This is a delete button on the right side but it didnt
+                        // work as expected
+
+                        /*
+                        projectCategoriesToDisplay[index] != "Title"
+                        ? GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              print(_controllerMap);
+                              projectCategoriesToDisplay.removeAt(index);
+                              _controllerMap.remove(projectCategoriesToDisplay[index]);
+                              print(_controllerMap);
+                            });
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 8),
+                            child: Icon(FeatherIcons.xCircle,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+
+                        : Container(),
+
+                         */
                       ],
                     ),
                     _buildTextField(controller)
                   ],
                 );
               }
-          )
+          ),
+          GestureDetector(
+            child: Container(
+              width: screenSize.width/7,
+              height: 50,
+              child: const Icon(
+                FeatherIcons.plusCircle,
+                color: Colors.orangeAccent,),
+            ),
+            onTap:() {_buildAddCustomCategoryDialog();},
+          ),
         ],
       ),
     );
@@ -921,6 +959,59 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           return ShowProjectScreen(projectData: newProject,
           showCaseCreateProject: true,);
         })
+    );
+  }
+
+  void _buildAddCustomCategoryDialog(){
+
+    final textFieldController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Add new category"),
+          content: Container(
+            width: screenSize.width/2,
+            height: screenSize.height/6,
+            child: Column(
+              children: [
+                TextField(
+                  controller: textFieldController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Category name",
+                    suffixStyle: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+            onPressed: () {
+              setState(() {
+                projectCategoriesToDisplay.add(textFieldController.text);
+              });
+              Navigator.pop(context);},
+            child: Text("OK"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent)
+              ),
+            ),
+            ElevatedButton(
+            onPressed: (){Navigator.pop(context);},
+            child: Text("Cancel"),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey)
+              ),
+            )
+          ],
+        );
+      }
     );
   }
 

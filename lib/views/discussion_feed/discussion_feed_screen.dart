@@ -35,7 +35,6 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
   // The lists which will change depending on the user's input
   List<DiscussionListData> discussionListToShow = DiscussionListData
       .discussionListRandom;
-  List<DiscussionListData> discussionListToShowFiltered = [];
 
   // the ref list
   List<EngagementListData> exampleBasicEngagementList = EngagementListData.exampleRandomList;
@@ -44,7 +43,6 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
 
   // the variable lists
   List<EngagementListData> engagementListToShow = EngagementListData.exampleRandomList;
-  List<EngagementListData> engagementListToShowFiltered = [];
 
 
   // Switches between discussions and engagements
@@ -162,10 +160,7 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
 
   Widget _buildDiscussionsListView(AnimationController animationController) {
     if (discussionOrEngagement) {
-      List<DiscussionListData> discussionListToBuild =
-      searchBarValue == "" && discussionListToShowFiltered.isEmpty
-          ? discussionListToShow
-          : discussionListToShowFiltered;
+      List<DiscussionListData> discussionListToBuild = discussionListToShow;
 
       return ListView.builder(
           itemCount: discussionListToBuild.length,
@@ -200,10 +195,7 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
           }
       );
     } else {
-      List<EngagementListData> engagementListToBuild =
-      searchBarValue == "" && engagementListToShowFiltered.isEmpty
-          ? engagementListToShow
-          : engagementListToShowFiltered;
+      List<EngagementListData> engagementListToBuild = engagementListToShow;
 
       return ListView.builder(
           itemCount: engagementListToBuild.length,
@@ -521,7 +513,8 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
       onChanged: (String txt) {
           searchBarValue = txt;
         setState(() {
-          _filterProjectsThroughSearchbar();
+          _filterGeneral();
+          //_filterProjectsThroughSearchbar();
         });
       },
       style: const TextStyle(
@@ -599,6 +592,7 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
     );
   }
 
+  /// Toggle Functions
 
   void _togglediscussionsOrEngagement() {
     print("ToggleDiscussionOrEngagement");
@@ -613,82 +607,65 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
         choose_what = "Choose Discussion";
       }
       discussionOrEngagement = !discussionOrEngagement;
+      _filterGeneral();
     });
   }
 
   void _togglePreferredDiscussionOrEngagement() {
     print("_togglePreferredDiscussion");
     setState(() {
-      if (preferredDiscussionOrEngagement) {
-        discussionListToShow = exampleBasicDiscussionList;
-      } else {
-        discussionListToShow = examplePreferredDiscussionList;
-      }
       preferredDiscussionOrEngagement = !preferredDiscussionOrEngagement;
+      _filterGeneral();
     });
   }
 
   /// Filter functions
-  void _filterProjectsThroughSearchbar() {
 
-    print(searchBarValue.toString());
 
-    /// We always filter both arrays at once because the search bar is permanent between them
+  void _filterGeneral(){
 
-    // When the searchbar is being cleaned and we are in the random section
-    if(searchBarValue == ""){
-      if(!preferredDiscussionOrEngagement){
-        // Set back to show all
-        discussionListToShow = exampleBasicDiscussionList;
-        engagementListToShow = exampleBasicEngagementList;
+    // Firstly, check which array we are operating on
+    _filterGetDesiredFeed();
 
-        // Other conditions depend on the emptiness of this array
-        discussionListToShowFiltered = [];
-        engagementListToShowFiltered = [];
-      }else{
-        // Set back to show all
+    if(searchBarValue != ""){
+      _filterGetDesiredText();
+    }
+  }
+
+  void _filterGetDesiredFeed(){
+
+    // Firstly, we look for the discussion arrays
+    if(discussionOrEngagement){
+      if(preferredDiscussionOrEngagement){
         discussionListToShow = examplePreferredDiscussionList;
-        engagementListToShow = examplePreferredEngagementList;
-
-        // Other conditions depend on the emptiness of this array
-        discussionListToShowFiltered = [];
-        engagementListToShowFiltered = [];
-      }
-
-    // When we actually have something to filter
-    }else{
-
-      // If no filters have been applied yet
-      if (discussionListToShowFiltered.isEmpty && engagementListToShowFiltered.isEmpty) {
-        final filteredDiscussions = discussionListToShow.where(
-                (discussion) =>
-                discussion.title.toLowerCase().contains(searchBarValue))
-            .toList();
-        discussionListToShowFiltered = filteredDiscussions;
-
-        final filteredEngagements = engagementListToShow.where(
-                (discussion) =>
-                discussion.name.toLowerCase().contains(searchBarValue))
-            .toList();
-        engagementListToShowFiltered = filteredEngagements;
-
-      // When we want to filter what's already been filtered
       }else{
-        final filteredDiscussions = discussionListToShowFiltered.where(
-                (engagement) =>
-                engagement.title.toLowerCase().contains(
-                    searchBarValue))
-            .toList();
-        discussionListToShowFiltered = filteredDiscussions;
-
-        final filteredEngagements = engagementListToShowFiltered.where(
-                (engagement) =>
-                engagement.name.toLowerCase().contains(
-                    searchBarValue))
-            .toList();
-        engagementListToShowFiltered = filteredEngagements;
+        discussionListToShow = exampleBasicDiscussionList;
+      }
+    // Alternatively, we are looking for engagements
+    }else{
+      if(preferredDiscussionOrEngagement){
+        engagementListToShow = examplePreferredEngagementList;
+      }else{
+        engagementListToShow = exampleBasicEngagementList;
       }
     }
   }
+
+  void _filterGetDesiredText(){
+    if(discussionOrEngagement){
+      final filteredDiscussions = discussionListToShow.where(
+              (discussion) =>
+              discussion.title.toLowerCase().contains(searchBarValue))
+          .toList();
+      discussionListToShow = filteredDiscussions;
+    }else{
+      final filteredEngagements = engagementListToShow.where(
+              (discussion) =>
+              discussion.name.toLowerCase().contains(searchBarValue))
+          .toList();
+      engagementListToShow = filteredEngagements;
+    }
+  }
+
 
 }

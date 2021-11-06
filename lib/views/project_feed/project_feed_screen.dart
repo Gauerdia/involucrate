@@ -4,6 +4,7 @@ import 'package:involucrate/components/calendar_popup_view.dart';
 import 'package:involucrate/components/test_tab_header.dart';
 import 'package:involucrate/model/project_list_data.dart';
 import 'package:involucrate/theme/theme_config.dart';
+import 'package:involucrate/views/co_working_space/co_working_space_screen.dart';
 import 'package:involucrate/views/project_feed/filter_screen.dart';
 import 'package:involucrate/views/project_feed/project_list_view.dart';
 import 'package:involucrate/views/project/show_project_screen.dart';
@@ -22,22 +23,21 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
 
   List<ProjectListData> randomProjectList = ProjectListData.projectListRandom;
   List<ProjectListData> preferredProjectList = ProjectListData.projectListPreferences;
+  List<ProjectListData> ownProjectList = ProjectListData.projectListOwnProjects;
 
   List<ProjectListData> projectListToShow = ProjectListData.projectListRandom;
-  List<ProjectListData> projectListToShowFiltered = [];
 
   // Needed for the nestedScrolling, which enables Sliver
   final ScrollController _scrollController = ScrollController();
 
   // Toggle-Variables to change the "desired State"-field
-  // 2 means all, 0 means still in planing, 1 means looking for reinforcement
+  // 2 means all, 0 means still in planning, 1 means looking for reinforcement
   int desiredState = 2;
-  bool stateStillInPlanning = false;
-  bool stateLookingForReinforcement = false;
-  bool stateAll = true;
 
   // Toggle-Variable for the "choose Feed"-field
-  bool preferredFeed = false;
+  // 0 means random, 1 means preferred, 2 means own feed
+  int desiredFeed = 0;
+  //bool preferredFeed = false;
 
   // For the searchbar
   String searchBarValue = "";
@@ -139,10 +139,7 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
 
   Widget _buildProjectsListView(AnimationController animationController) {
 
-    List<ProjectListData> projectListToBuild =
-        searchBarValue == "" && projectListToShowFiltered.isEmpty
-        ? projectListToShow
-        : projectListToShowFiltered;
+    List<ProjectListData> projectListToBuild = projectListToShow;
 
     return ListView.builder(
         itemCount: projectListToBuild.length,
@@ -164,9 +161,14 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context)
-                  => ShowProjectScreen(
-                      projectData: projectListToBuild[index],
-                      showCaseCreateProject: false)
+                  => desiredFeed == 2
+                      ? CoWorkingSpaceScreen(
+                          projectData: projectListToBuild[index]
+                        )
+                      : ShowProjectScreen(
+                          projectData: projectListToBuild[index],
+                          showCaseCreateProject: false
+                        )
                   )
                 );
               },
@@ -203,7 +205,7 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
                     ),
                     onTap: () {
                       setState(() {
-                        _togglePreferredFeed();
+                        _toggleDesiredFeed();
                       });
                     },
                     child: Padding(
@@ -224,9 +226,13 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
                             height: 8,
                           ),
                           Text(
-                            preferredFeed
+                            desiredFeed == 0
+                              ? "Random Feed"
+                              : desiredFeed == 1
                                 ? "Preferred Feed"
-                                : "Random Feed",
+                                : desiredFeed == 2
+                                  ? "Own Feed"
+                                  : "Error",
                             style: const TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 16,
@@ -289,13 +295,13 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
                             height: 8,
                           ),
                           Text(
-                            stateAll
-                              ? "All"
-                              : stateStillInPlanning
-                              ? "Still in Planing"
-                              : stateLookingForReinforcement
-                              ? "Looking for support"
-                              : "Error"  ,
+                            desiredState == 2
+                            ? "All"
+                            : desiredState == 1
+                            ? "Still being planned"
+                            : desiredState == 0
+                            ? "Looking for support"
+                            : "Error",
                             style: const TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 16,
@@ -463,7 +469,8 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
       onChanged: (String txt) {
         searchBarValue = txt;
         setState(() {
-          _filterProjectsThroughSearchbar();
+          _filterProjectsGeneral();
+          //_filterProjectsThroughSearchbar();
         });
       },
       style: const TextStyle(
@@ -536,99 +543,82 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
 
   /// Toggle Variables
 
-  void _togglestateStillInPlanning(){
-    print("ToggleInPlanning");
-    stateStillInPlanning = !stateStillInPlanning;
-  }
-  void _togglestateLookingForReinforcement(){
-    print("_toggleReinforcement");
-    stateLookingForReinforcement = !stateLookingForReinforcement;
-  }
-  void _togglestateAll(){
-    print("_toggleReinforcement");
-    stateAll = !stateAll;
-  }
-  void _togglePreferredFeed(){
-    print("_togglePreferredFeed");
+
+  void _toggleDesiredFeed(){
+
+    // Toggle the state of the feed
+    desiredFeed += 1;
+    if(desiredFeed >= 3){
+      desiredFeed = 0;
+    }
+
     setState(() {
-      if(preferredFeed){
-        projectListToShow = randomProjectList;
-      }else{
-        projectListToShow = preferredProjectList;
-      }
-      preferredFeed = !preferredFeed;
+      _filterProjectsGeneral();
     });
+
   }
 
-  /// desiredState == 0: All, desiredState == 1: Still in Planing,
-  /// desiredState == 2: Looking for Reinforcement
+  /// desiredState == 0: All, desiredState == 1: Still in Planning, desiredState == 2: Looking for Reinforcement
   void _toggleDesiredState(){
+
     desiredState += 1;
     if(desiredState >= 3){
       desiredState = 0;
     }
-    if(stateAll){
-      _togglestateAll();
-      _togglestateStillInPlanning();
-    }else if(stateStillInPlanning){
-      _togglestateStillInPlanning();
-      _togglestateLookingForReinforcement();
-    }else if(stateLookingForReinforcement){
-      _togglestateLookingForReinforcement();
-      _togglestateAll();
-    }
+
     setState(() {
-      _filterProjectsThroughState();
+      _filterProjectsGeneral();
     });
+
   }
 
   /// Filter functions
-  void _filterProjectsThroughSearchbar(){
-    if(searchBarValue == "" && !preferredFeed){
-      projectListToShowFiltered = randomProjectList;
-    }
-    else if(searchBarValue == "" && preferredFeed){
-      projectListToShowFiltered = preferredProjectList;
-    }
-    else{
-      if(projectListToShowFiltered.isEmpty){
-        // If no filters have been applied yet
-        final filteredProjects = projectListToShow.where(
-                (project) =>
-                project.title.toLowerCase().contains(searchBarValue))
-            .toList();
-        projectListToShowFiltered = filteredProjects;
+  void _filterProjectsGeneral(){
+
+      // Firstly, check which array we are operating on
+      _filterGetDesiredFeed();
+
+      // Secondly, we filter through the states.
+      _filterGetDesiredState();
+
+      if(searchBarValue != ""){
+        _filterGetDesiredText();
       }
-      // There are already filters applied
-      else{
-        final filteredProjects = projectListToShowFiltered.where(
-                (project) =>
-                project.title.toLowerCase().contains(searchBarValue))
-            .toList();
-        projectListToShowFiltered = filteredProjects;
-      }
+  }
+
+  void _filterGetDesiredFeed(){
+    switch(desiredFeed){
+      case 0: {
+        projectListToShow = randomProjectList;
+      } break;
+      case 1: {
+        projectListToShow = preferredProjectList;
+      } break;
+      case 2: {
+        projectListToShow = ownProjectList;
+      } break;
+      default: {
+        projectListToShow = randomProjectList;
+      } break;
     }
   }
-  void _filterProjectsThroughState(){
 
-    print("Desired State:" + desiredState.toString());
-
-    // The filtered array may be filled due to the searchbar, then we dont want
-    // to use the main array. But when the filtered array is filled due to
-    // the state-filtering before, we dont want to filter the already filtered
-    // array.
-    if(projectListToShowFiltered.isEmpty || searchBarValue == ""){
+  void _filterGetDesiredState(){
+    // 2 represents the wish for all elements
+    if(desiredState != 2){
       final filteredProjects = projectListToShow.where(
               (project) => project.state == desiredState)
           .toList();
-      projectListToShowFiltered = filteredProjects;
-    }else{
-      final filteredProjects = projectListToShowFiltered.where(
-              (project) => project.state == desiredState)
-          .toList();
-      projectListToShowFiltered = filteredProjects;
+      projectListToShow = filteredProjects;
     }
   }
 
+  void _filterGetDesiredText(){
+    final filteredProjects = projectListToShow.where(
+            (project) =>
+            project.title.toLowerCase().contains(searchBarValue))
+        .toList();
+    projectListToShow = filteredProjects;
+  }
 }
 

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:involucrate/components/test_tab_header.dart';
 import 'package:involucrate/model/project_list_data.dart';
 import 'package:involucrate/theme/theme_config.dart';
+import 'package:involucrate/views/comments/show_comments_screen.dart';
 import 'package:involucrate/views/profile/comment_tile.dart';
 
 class ShowProjectScreen extends StatefulWidget {
@@ -168,7 +170,7 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
                     child: Column(
                       children: [
                         ListTile(
-                          title: Text("Public comments",
+                          title: Text("General comments",
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
@@ -281,21 +283,6 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
     );
   }
 
-  Widget _buildCommentSection(){
-    return Container(
-      child: _buildTestComment(),
-    );
-  }
-
-  Widget _buildTestComment(){
-    return Card(
-      child: ListTile(
-        title: Text("rerf"),
-        subtitle: Text("fefef"),
-      ),
-    );
-  }
-
   Widget _buildPublicCommentsExample(){
 
     return widget.showCaseCreateProject
@@ -327,8 +314,31 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
       );
       Widget contentToDisplay = _buildCloudyBackground(widget.projectData!.categories_content[i]);
 
-      widgetsToDisplayList.add(headLineToDisplay);
-      widgetsToDisplayList.add(contentToDisplay);
+      Widget columnToDisplay = Column(
+        children: [
+          headLineToDisplay,
+          contentToDisplay,
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData!.categories[i],)),
+                  );
+
+                  },
+                child: Icon(FeatherIcons.messageSquare),
+              )
+            ],
+              mainAxisAlignment: MainAxisAlignment.end,
+          )
+        ],
+      );
+
+      widgetsToDisplayList.add(columnToDisplay);
+
     }
 
     return widgetsToDisplayList;
@@ -351,143 +361,20 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
     });
   }
 
-
-  /*
-  @override
-  Widget build(BuildContext context) {
-
-    return Material(
-      type: MaterialType.transparency,
-      child: Container(
-        color: Theme.of(context).dialogBackgroundColor,
-        margin: const EdgeInsets.only(top: 0),
-        child: _buildMainStack(context), //_mainColumn(),
-      ),
-    );
+  void _buildCommentDialog(){
+    showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Comments"),
+            content: Container(
+              child: Text("efwef"),
+            ),
+            actions: [
+              ElevatedButton(onPressed: () {Navigator.pop(context);}, child: Text("Back"))
+            ],
+          );
+        });
   }
 
-
-  Widget _buildMainStack(BuildContext context){
-    return Theme(
-        data: ThemeConfig.lightTheme,
-          child: Container(
-            child: Stack(
-              children: [
-                _buildMainColumn(context)
-              ]
-            )
-          )
-    );
-  }
-
-  _buildMainColumn(BuildContext context) {
-    return Column(
-      children: [
-        Container(height: 40, color: Theme.of(context).dialogBackgroundColor),
-        Expanded(
-            child: NestedScrollView(
-                controller: _scrollController,
-                headerSliverBuilder: (BuildContext context,
-                    bool innerBoxIsScrolled) {
-                  return [
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                _buildTitleImage(widget.projectData)
-                              ],
-                            );
-                          }, childCount: 1),
-                    ),
-                    SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: TestTabHeader(
-                        _buildPersistantHeader(context),
-                      ),
-                    ),
-                  ];
-                },
-                body: Container(
-                  // bg-color of the part below the part with the search bar,
-                  // filter and calendar
-                  color: Theme
-                      .of(context)
-                      .backgroundColor,
-                  child: _buildContent()//_buildProjectsListView(animationController),
-                )
-            )
-        )
-      ],
-    );
-  }
-
-  Widget _buildPersistantHeader(BuildContext context){
-    return Container(
-      height: 150,
-      color: Theme.of(context).dialogBackgroundColor,
-      child: Row(
-        children: [
-          Text(widget.projectData!.title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 32
-              )
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTitleImage(ProjectListData? projectData){
-    return AspectRatio(
-      aspectRatio: 2,
-      child: Image.asset(
-          projectData!.imagePath,
-          fit: BoxFit.fill),
-    );
-  }
-
-  Widget _buildContent(){
-
-    return ListView.builder(
-        itemCount: widget.projectData!.categories.length,
-        padding: const EdgeInsets.only(top: 8),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildCategoryAndContent(index);
-        }
-    );
-  }
-
-  Widget _buildCategoryAndContent(int index){
-    return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 15),
-      child: Column(
-        children: [
-          Text(widget.projectData!.categories[index],
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 26
-              )
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(widget.projectData!.categories_content[index],
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16
-                )),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-   */
 }

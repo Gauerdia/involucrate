@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:intl/intl.dart';
 
 class CommentTile extends StatelessWidget {
@@ -38,12 +39,12 @@ class CommentTile extends StatelessWidget {
       final df = new DateFormat('dd-MM-yyyy hh:mm a');
       dateFormatted = df.format(new DateTime.fromMillisecondsSinceEpoch(date));
 
-      return _buildMainColumn();
+      return _buildMainColumn(context);
   }
 
   /// View
 
-  Widget _buildMainColumn(){
+  Widget _buildMainColumn(BuildContext context){
     try{
       return Padding(
         padding: EdgeInsets.only(top: 8.0),
@@ -52,7 +53,7 @@ class CommentTile extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(10.0, 6.0, 10.0, 0.0),
           child: Column(
             children: [
-              _buildHeadOfPosting(),
+              _buildHeadOfPosting(context),
               _buildSeparator(),
               buildPostingContent(),
             ],
@@ -65,7 +66,7 @@ class CommentTile extends StatelessWidget {
     }
   }
   // Builds the small picture, the name, the date and the button on the right
-  Widget _buildHeadOfPosting(){
+  Widget _buildHeadOfPosting(BuildContext context){
       return ListTile(
         // Leading is the Avatar-picture
         leading: GestureDetector(
@@ -91,7 +92,7 @@ class CommentTile extends StatelessWidget {
         subtitle: Text(dateFormatted),
         // Trailing is the 3-point-icon on the right
         trailing: GestureDetector(
-          onTap: (){},
+          onTap: (){_onClickButtonUpperRight(context);},
           child: Icon(Icons.more_vert),
         ),
       );
@@ -172,5 +173,50 @@ class CommentTile extends StatelessWidget {
     }
   }
 
+  void _onClickButtonUpperRight(BuildContext context){
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 1.0,
+            )
+          )
+        ),
+        padding: EdgeInsets.symmetric(vertical: 20,horizontal: 60),
+        child: Container(
+          height: 100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: const [
+                  Icon(FeatherIcons.userPlus),
+                  SizedBox(width: 20),
+                  Text("Add the user to the project")
+                ],
+              ),
+              const SizedBox(height: 10,),
+              Row(
+                children: const [
+                  Icon(FeatherIcons.user),
+                  SizedBox(width: 20),
+                  Text("Go to profile")
+                ],
+              ),
+              const SizedBox(height: 10,),
+              Row(
+                children: const [
+                  Icon(FeatherIcons.xOctagon),
+                  SizedBox(width: 20),
+                  Text("Delete the comment")
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
 
 }

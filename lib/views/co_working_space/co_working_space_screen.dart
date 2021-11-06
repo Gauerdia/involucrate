@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:involucrate/components/test_tab_header.dart';
 import 'package:involucrate/model/project_list_data.dart';
 import 'package:involucrate/theme/theme_config.dart';
 import 'package:comment_box/comment/comment.dart';
+import 'package:involucrate/views/comments/show_comments_screen.dart';
 import 'package:involucrate/views/profile/comment_tile.dart';
 
 class CoWorkingSpaceScreen extends StatefulWidget {
@@ -48,11 +51,17 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
 
   List<Widget> contentToDisplayList = [];
 
+  List<Widget> customContentToAdd = [];
+
+  late Size screenSize;
+
 
   @override
   Widget build(BuildContext context) {
 
     contentToDisplayList = _createCategoryItemsWidgets();
+    print("build: " + contentToDisplayList.toString());
+    screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Container(
@@ -106,6 +115,7 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
                       floating: true,
                       delegate: TestTabHeader(
                         _buildPersistantHeader(context),
+                        0
                       ),
                     ),
                   ];
@@ -159,6 +169,17 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
                   SizedBox(height: 8,),
                   for(var widget in contentToDisplayList) widget,
 
+                  GestureDetector(
+                    child: Container(
+                      width: screenSize.width/7,
+                      height: 50,
+                      child: const Icon(
+                        FeatherIcons.plusCircle,
+                        color: Colors.orangeAccent,),
+                    ),
+                    onTap:() {_buildAddCustomCategoryDialog();},
+                  ),
+
                   /// First Comment Section
                   GestureDetector(
                     onTap: (){togglePublicCommentsOpen();},
@@ -167,8 +188,8 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text("Public comments",
-                                        style: const TextStyle(
+                            title: const Text("General comments(public)",
+                                        style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 26
@@ -194,8 +215,8 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text("Private comments",
-                                style: const TextStyle(
+                            title: const Text("General comments(private)",
+                                style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 26
@@ -219,24 +240,6 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
               )
           )
       );
-  }
-
-  Widget _buildCategoryContent(int index){
-    return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 15),
-      child: Column(
-        children: [
-          Text(widget.projectData.categories[index],
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 26
-              )
-          ),
-          _buildCloudyBackground(widget.projectData.categories_content[index])
-        ],
-      ),
-    );
   }
 
   Widget _buildCloudyBackground(String textToDisplay){
@@ -388,34 +391,42 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
     List<Widget> widgetsToDisplayList = [];
 
     for(var i=0;i<widget.projectData.categories.length; i++){
-      Widget headLineToDisplay = Padding(
-        padding: EdgeInsets.only(top:22,bottom: 8),
-        child: Text(widget.projectData.categories[i],
-            style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 26
-            )
-        ),
+
+      Widget headLineToDisplay = Text(widget.projectData.categories[i],
+          style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 26
+          )
       );
       Widget contentToDisplay = _buildCloudyBackground(widget.projectData.categories_content[i]);
 
-      widgetsToDisplayList.add(headLineToDisplay);
-      widgetsToDisplayList.add(contentToDisplay);
-    }
+      Widget columnToDisplay = Column(
+        children: [
+          headLineToDisplay,
+          contentToDisplay,
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData.categories[i],)),
+                  );
+
+                },
+                child: const Icon(FeatherIcons.messageSquare),
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
+          )
+        ],
+      );
+      widgetsToDisplayList.add(columnToDisplay);
+    }
+    for(var i in customContentToAdd) widgetsToDisplayList.add(i);
     return widgetsToDisplayList;
-  }
-  Widget _buildListViewOfCategoryItems() {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.projectData.categories.length,
-        padding: const EdgeInsets.only(top: 8),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildCategoryContent(index);
-        }
-    );
   }
 
   void togglePublicCommentsOpen(){
@@ -428,28 +439,95 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
       privateCommentsOpen = !privateCommentsOpen;
     });
   }
-}
 
-class TestTabHeader extends SliverPersistentHeaderDelegate{
-  TestTabHeader(
-      this.searchUI,
+  void _buildAddCustomCategoryDialog(){
+
+    final textFieldController = TextEditingController();
+
+    showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Add new category"),
+            content: Container(
+              width: screenSize.width/2,
+              height: screenSize.height/6,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: textFieldController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Category name",
+                        suffixStyle: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _onPressAddCategory(textFieldController);
+                    Navigator.pop(context);
+                  });
+                  },
+                child: Text("OK"),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent)
+                ),
+              ),
+              ElevatedButton(
+                onPressed: (){Navigator.pop(context);},
+                child: Text("Cancel"),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey)
+                ),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void _onPressAddCategory(TextEditingController textFieldController){
+      Widget headLineToDisplay = Text(textFieldController.text,
+          style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 26
+          )
       );
-  final Widget searchUI;
+      Widget contentToDisplay = _buildCloudyBackground("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.");
 
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent){
-    return searchUI;
+      Widget columnToDisplay = Column(
+        children: [
+          headLineToDisplay,
+          contentToDisplay,
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ShowCommentsScreen(title:"Test")),
+                  );
+
+                },
+                child: const Icon(FeatherIcons.messageSquare),
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
+          )
+        ],
+      );
+      customContentToAdd.add(columnToDisplay);
+      print("after adding: " + contentToDisplayList.toString());
+    }
+
   }
 
-  @override
-  double get maxExtent => 88.0;
-
-  @override
-  double get minExtent => 88.0;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate){
-    return false;
-  }
-}

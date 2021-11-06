@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:involucrate/model/project_list_data.dart';
+import 'package:involucrate/views/project/show_project_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'utils.dart';
@@ -12,7 +14,6 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-
 
   // Objects for init of calendar
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -155,7 +156,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
+                        onTap: () {
+                          print('${value[index]}');
+
+                          ProjectListData testData = ProjectListData(
+                              title: '${value[index]}',
+                              topic: "politic",
+                              location: "Herne",
+                              creator: "Hans Wurst",
+                              organiser: "private person",
+                              state: 0,
+                              imagePath: "assets/images/geo_abstract_bg_rose.jpg",
+                              categories: ["Idea","Structure","Financing"],
+                              categories_content: ["Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+                                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+                                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."]
+                          );
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ShowProjectScreen(projectData: testData,showCaseCreateProject: false,))
+                          );
+                        },
                         title: Text('${value[index]}'),
                       )
                     );
