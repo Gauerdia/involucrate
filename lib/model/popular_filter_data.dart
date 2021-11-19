@@ -27,6 +27,9 @@ class PopularFilterData{
         titleText: "communal",
         isSelected: false),
     PopularFilterData(
+        titleText: "regional",
+        isSelected: false),
+    PopularFilterData(
         titleText: "federal",
         isSelected: false),
     PopularFilterData(

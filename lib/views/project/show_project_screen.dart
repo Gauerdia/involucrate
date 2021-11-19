@@ -159,7 +159,7 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
         child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 16,),
+                SizedBox(height: 32,),
                 for(var widget in contentToDisplayList) widget,
 
                 /// First Comment Section
@@ -300,6 +300,7 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
 
   /// Helper functions
 
+  /*
   List<Widget> _createCategoryItemsWidgets(){
 
     List<Widget> widgetsToDisplayList = [];
@@ -343,6 +344,63 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
 
     return widgetsToDisplayList;
   }
+
+   */
+
+  // Takes the categories and builds a header and a text for each
+  List<Widget> _createCategoryItemsWidgets(){
+
+    List<Widget> widgetsToDisplayList = [];
+
+    for(var i=0;i<widget.projectData!.categories.length; i++){
+
+
+      Widget headLineToDisplay = IntrinsicHeight(
+        child: Stack(
+          children: [
+            Align(
+                child:
+                Text(widget.projectData!.categories[i],
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 26
+                    )
+                )
+            ),
+            Positioned(
+                right:10,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData!.categories[i],)),
+                    );
+                  },
+                  child: Icon(FeatherIcons.messageSquare,
+                    color: Colors.black.withOpacity(0.25),
+                  ),
+                )
+            ),
+          ],
+        ),
+      );
+
+      Widget contentToDisplay = _buildCloudyBackground(widget.projectData!.categories_content[i]);
+
+      Widget columnToDisplay = Column(
+        children: [
+          headLineToDisplay,
+          SizedBox(height: 16,),
+          contentToDisplay,
+          SizedBox(height: 16,)
+        ],
+      );
+      widgetsToDisplayList.add(columnToDisplay);
+    }
+    return widgetsToDisplayList;
+  }
+
   Widget _buildListViewOfCategoryItems() {
     return ListView.builder(
         shrinkWrap: true,

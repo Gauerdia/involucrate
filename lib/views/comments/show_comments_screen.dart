@@ -81,9 +81,9 @@ class _ShowCommentsScreenState extends State<ShowCommentsScreen> {
   Widget _buildFooter(){
     return Container(
       height: 120,
-      decoration: const BoxDecoration(
-          color: Colors.blueGrey,
-          border: Border(
+      decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.25),
+          border: const Border(
               top: BorderSide(
                   width: 1.0,
                   color: Colors.black
@@ -128,10 +128,13 @@ class _ShowCommentsScreenState extends State<ShowCommentsScreen> {
       child: TextFormField(
         controller: _controller,
         decoration: const InputDecoration(
+          /*
             prefixIcon: Icon(
               Icons.person,
               color: Colors.white,
             ),
+
+           */
             border: OutlineInputBorder(
               // width: 0.0 produces a thin "hairline" border
               borderRadius: BorderRadius.all(Radius.circular(90.0)),
@@ -139,9 +142,11 @@ class _ShowCommentsScreenState extends State<ShowCommentsScreen> {
               //borderSide: const BorderSide(),
             ),
 
-            hintStyle: TextStyle(color: Colors.white,fontFamily: "WorkSansLight"),
+            hintStyle: TextStyle(
+                color: Colors.black,
+                fontFamily: "WorkSansLight"),
             filled: true,
-            fillColor: Colors.white24,
+            fillColor: Colors.white60,
             hintText: 'Write a comment!'),
         onChanged: (text){
           createChatMessageValue = text;

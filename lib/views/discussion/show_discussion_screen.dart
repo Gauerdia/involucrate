@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:involucrate/components/test_tab_header.dart';
 import 'package:involucrate/model/discussion_list_data.dart';
 import 'package:involucrate/theme/theme_config.dart';
+import 'package:involucrate/views/comments/show_comments_screen.dart';
 import 'package:involucrate/views/profile/comment_tile.dart';
 
 class ShowDiscussionScreen extends StatefulWidget {
@@ -157,7 +159,7 @@ class _ShowDiscussionScreenState extends State<ShowDiscussionScreen> {
         child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 16,),
+                SizedBox(height: 32,),
                 for(var widget in contentToDisplayList) widget,
 
                 /// First Comment Section
@@ -357,7 +359,7 @@ class _ShowDiscussionScreenState extends State<ShowDiscussionScreen> {
   }
 
   /// Helper functions
-
+/*
   List<Widget> _createCategoryItemsWidgets(){
 
     List<Widget> widgetsToDisplayList = [];
@@ -376,6 +378,60 @@ class _ShowDiscussionScreenState extends State<ShowDiscussionScreen> {
       widgetsToDisplayList.add(contentToDisplay);
     }
 
+    return widgetsToDisplayList;
+  }
+ */
+  // Takes the categories and builds a header and a text for each
+  List<Widget> _createCategoryItemsWidgets(){
+
+    List<Widget> widgetsToDisplayList = [];
+
+    for(var i=0;i<widget.discussionData!.categories.length; i++){
+
+
+      Widget headLineToDisplay = IntrinsicHeight(
+        child: Stack(
+          children: [
+            Align(
+                child:
+                Text(widget.discussionData!.categories[i],
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 26
+                    )
+                )
+            ),
+            Positioned(
+                right:10,
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.discussionData!.categories[i],)),
+                    );
+                  },
+                  child: Icon(FeatherIcons.messageSquare,
+                    color: Colors.black.withOpacity(0.25),
+                  ),
+                )
+            ),
+          ],
+        ),
+      );
+
+      Widget contentToDisplay = _buildCloudyBackground(widget.discussionData!.categories_content[i]);
+
+      Widget columnToDisplay = Column(
+        children: [
+          headLineToDisplay,
+          SizedBox(height: 16,),
+          contentToDisplay,
+          SizedBox(height: 16,)
+        ],
+      );
+      widgetsToDisplayList.add(columnToDisplay);
+    }
     return widgetsToDisplayList;
   }
 

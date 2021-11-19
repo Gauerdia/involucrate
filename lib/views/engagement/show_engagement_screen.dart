@@ -96,12 +96,17 @@ class _ShowEngagementScreenState extends State<ShowEngagementScreen> {
     );
   }
   Widget _buildPersistantHeader(BuildContext context){
+
     return Container(
+/*
       decoration: BoxDecoration(
-        color: Colors.grey[400],
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(3)
       ),
-      height: 500,
+
+
+ */
+      height: 600,
       child: Padding(
         padding: EdgeInsets.only(top:8),
         child: Text(widget.engagementData!.name,
@@ -127,6 +132,7 @@ class _ShowEngagementScreenState extends State<ShowEngagementScreen> {
         child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 20,),
                 _buildMission(),
                 _buildDescription(),
                 _buildMeetNGreetDate()
@@ -148,6 +154,7 @@ class _ShowEngagementScreenState extends State<ShowEngagementScreen> {
                   fontSize: 26
               )
           ),
+          SizedBox(height: 16,),
           _buildCloudyBackground(widget.engagementData!.mission)
         ],
       ),
@@ -166,6 +173,7 @@ class _ShowEngagementScreenState extends State<ShowEngagementScreen> {
                   fontSize: 26
               )
           ),
+          SizedBox(height: 16,),
           _buildCloudyBackground(widget.engagementData!.description)
         ],
       ),
@@ -184,6 +192,7 @@ class _ShowEngagementScreenState extends State<ShowEngagementScreen> {
                   fontSize: 26
               )
           ),
+          SizedBox(height: 16,),
           _buildCloudyBackground(widget.engagementData!.meetNGreetDate)
         ],
       ),

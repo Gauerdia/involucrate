@@ -31,11 +31,12 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
   bool privateCommentsOpen = false;
 
   List drawerItems = [
-    {"icon": Icons.add,"name": "Feed",},
-    {"icon": Icons.delete, "name": "Your Feed",},
-    {"icon": Icons.delete, "name": "test1",},
-    {"icon": Icons.delete, "name": "test2",},
-    {"icon": Icons.delete, "name": "test3",},
+    {"icon":Icons.apartment,"name":"General"},
+    {"icon": Icons.account_circle_outlined,"name": "Show members",},
+    {"icon": Icons.account_tree_outlined, "name": "rights management",},
+    {"icon": Icons.calendar_today_outlined, "name": "Internal calendar",},
+    {"icon": Icons.group_outlined, "name": "internal discussions",},
+    {"icon": Icons.settings, "name": "Document settings",},
   ];
 
   List publicComments = [
@@ -166,7 +167,7 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
           child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 8,),
+                  SizedBox(height: 38,),
                   for(var widget in contentToDisplayList) widget,
 
                   GestureDetector(
@@ -337,8 +338,7 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
   /// Drawer Components
   Drawer _buildDrawer(){
 
-    List<String> drawerElementsToDisplay = List.from(widget.projectData.categories);
-    drawerElementsToDisplay.insert(0, "General");
+    var drawerElementsToDisplay = List.from(drawerItems);//List.from(widget.projectData.categories);
 
     return Drawer(
       child: ListView(
@@ -363,16 +363,18 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
       ),
     );
   }
-  Widget _buildDrawerListTile(String drawerElementToDisplay, int index){
+  Widget _buildDrawerListTile(drawerElementToDisplay, int index){
+
+    print(drawerElementToDisplay);
 
     return ListTile(
       leading: Icon(
-        Icons.description,
+        drawerElementToDisplay["icon"],
           color: _page == index
               ? Colors.orangeAccent
               : Colors.grey
       ),
-      title: Text(drawerElementToDisplay,
+      title: Text(drawerElementToDisplay["name"],
               style: TextStyle(
                   color: _page == index
                       ?Colors.orangeAccent
@@ -392,35 +394,46 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
 
     for(var i=0;i<widget.projectData.categories.length; i++){
 
-      Widget headLineToDisplay = Text(widget.projectData.categories[i],
-          style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 26
-          )
+
+      Widget headLineToDisplay = IntrinsicHeight(
+        child: Stack(
+          children: [
+            Align(
+                child:
+                  Text(widget.projectData.categories[i],
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 26
+                    )
+                  )
+            ),
+            Positioned(
+              right:10,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData.categories[i],)),
+                  );
+                },
+                child: Icon(FeatherIcons.messageSquare,
+                  color: Colors.black.withOpacity(0.25),
+                ),
+              )
+            ),
+          ],
+        ),
       );
+
       Widget contentToDisplay = _buildCloudyBackground(widget.projectData.categories_content[i]);
 
       Widget columnToDisplay = Column(
         children: [
           headLineToDisplay,
+          SizedBox(height: 16,),
           contentToDisplay,
-          Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData.categories[i],)),
-                  );
-
-                },
-                child: const Icon(FeatherIcons.messageSquare),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
-          )
+          SizedBox(height: 16,)
         ],
       );
       widgetsToDisplayList.add(columnToDisplay);
@@ -495,34 +508,46 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
   }
 
   void _onPressAddCategory(TextEditingController textFieldController){
-      Widget headLineToDisplay = Text(textFieldController.text,
-          style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 26
-          )
-      );
+
+
+    Widget headLineToDisplay = IntrinsicHeight(
+      child: Stack(
+        children: [
+          Align(
+              child:
+              Text(textFieldController.text,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 26
+                  )
+              )
+          ),
+          Positioned(
+              right:10,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: textFieldController.text,)),
+                  );
+                },
+                child: Icon(FeatherIcons.messageSquare,
+                  color: Colors.black.withOpacity(0.25),
+                ),
+              )
+          ),
+        ],
+      ),
+    );
       Widget contentToDisplay = _buildCloudyBackground("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.");
 
       Widget columnToDisplay = Column(
         children: [
           headLineToDisplay,
+          SizedBox(height: 16,),
           contentToDisplay,
-          Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ShowCommentsScreen(title:"Test")),
-                  );
-
-                },
-                child: const Icon(FeatherIcons.messageSquare),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
-          )
+          SizedBox(height: 16,),
         ],
       );
       customContentToAdd.add(columnToDisplay);
