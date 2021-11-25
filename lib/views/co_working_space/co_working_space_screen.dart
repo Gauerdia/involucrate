@@ -33,9 +33,9 @@ class _CoWorkingSpaceScreenState extends State<CoWorkingSpaceScreen> {
   List drawerItems = [
     {"icon":Icons.apartment,"name":"General"},
     {"icon": Icons.account_circle_outlined,"name": "Show members",},
-    {"icon": Icons.account_tree_outlined, "name": "rights management",},
+    {"icon": Icons.account_tree_outlined, "name": "Rights management",},
     {"icon": Icons.calendar_today_outlined, "name": "Internal calendar",},
-    {"icon": Icons.group_outlined, "name": "internal discussions",},
+    {"icon": Icons.group_outlined, "name": "Internal discussions",},
     {"icon": Icons.settings, "name": "Document settings",},
   ];
 

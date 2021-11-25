@@ -21,11 +21,11 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
   // Needed to animate the project-tiles we want to show
   late AnimationController animationController;
 
-  List<ProjectListData> randomProjectList = ProjectListData.projectListRandom;
+  List<ProjectListData> randomProjectList = ProjectListData.refinedList;  //ProjectListData.projectListRandom;
   List<ProjectListData> preferredProjectList = ProjectListData.projectListPreferences;
   List<ProjectListData> ownProjectList = ProjectListData.projectListOwnProjects;
 
-  List<ProjectListData> projectListToShow = ProjectListData.projectListRandom;
+  List<ProjectListData> projectListToShow = ProjectListData.refinedList;
 
   // Needed for the nestedScrolling, which enables Sliver
   final ScrollController _scrollController = ScrollController();

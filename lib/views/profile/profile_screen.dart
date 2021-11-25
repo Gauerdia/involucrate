@@ -20,7 +20,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   late Size screenSize;
   List<ProfileData> profileList = ProfileData.profileDataList;
 
-  List<ProjectListData> projectList = ProjectListData.projectListPreferences;
+  List<ProjectListData> currentProjectList = ProjectListData.projectListOwnProjects;
+  List<ProjectListData> pastProjectList = ProjectListData.pastProjects;//ProjectListData.projectListPreferences;
 
 
   // Needed to animate the project-tiles we want to show
@@ -382,7 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
     List<Widget> widgets = [];
 
-    int count = projectList.length > 10? 10 : projectList.length;
+    int count = currentProjectList.length > 10? 10 : currentProjectList.length;
     for(var i=0; i<1; i++){
       final Animation<double> animation =
       Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -399,12 +400,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) =>
-                        CoWorkingSpaceScreen(projectData: projectList[i]))
+                        CoWorkingSpaceScreen(projectData: currentProjectList[i]))
                 );
               },
             animation: animation,
             animationController: animationController,
-            projectData: projectList[i]
+            projectData: currentProjectList[i]
           )
       );
     }
@@ -416,8 +417,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
     List<Widget> widgets = [];
 
-    int count = projectList.length > 10? 10 : projectList.length;
-    for(var i=1; i<projectList.length; i++){
+    int count = pastProjectList.length > 10? 10 : pastProjectList.length;
+    for(var i=0; i<pastProjectList.length; i++){
       final Animation<double> animation =
       Tween<double>(begin: 0.0, end: 1.0).animate(
           CurvedAnimation(
@@ -433,12 +434,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) =>
-                        CoWorkingSpaceScreen(projectData: projectList[i]))
+                        CoWorkingSpaceScreen(projectData: pastProjectList[i]))
                 );
               },
               animation: animation,
               animationController: animationController,
-              projectData: projectList[i]
+              projectData: pastProjectList[i]
           )
       );
     }

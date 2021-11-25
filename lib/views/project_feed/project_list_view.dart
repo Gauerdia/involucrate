@@ -192,8 +192,8 @@ class ProjectListView extends StatelessWidget {
         crossAxisAlignment:
         CrossAxisAlignment.end,
         children: <Widget>[
-          const Text(
-            'Every sunday',
+           Text(
+            projectData!.date,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
@@ -201,7 +201,7 @@ class ProjectListView extends StatelessWidget {
             ),
           ),
           Text(
-            'starting 10/21',
+            projectData!.regularly? "regularly" : "once",
             style: TextStyle(
                 fontSize: 14,
                 color:

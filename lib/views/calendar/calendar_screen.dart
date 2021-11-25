@@ -166,6 +166,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               creator: "Hans Wurst",
                               organiser: "private person",
                               state: 0,
+                              regularly: false,
+                              date: "n/a",
                               imagePath: "assets/images/geo_abstract_bg_rose.jpg",
                               categories: ["Idea","Structure","Financing"],
                               categories_content: ["Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",

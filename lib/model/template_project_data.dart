@@ -10,10 +10,15 @@ class TemplateProjectData{
   List<String> categories;
 
   static List<TemplateProjectData> templateListExample = <TemplateProjectData>[
-    TemplateProjectData(name: "Basic", categories: ["Title","Idea","Description"]),
-    TemplateProjectData(name: "Business", categories: ["Title","Idea","Description", "Finance"]),
-    TemplateProjectData(name: "Business Deluxe", categories: ["Title","Idea","Description","Finance", "Structure"]),
-    TemplateProjectData(name: "Sport", categories: ["Title","Idea","Description","Table"]),
+    TemplateProjectData(
+        name: "Sportveranstaltung",
+        categories: ["Titel","Idee","Tagesablauf","Turnierplan","Fianzierung","Benötigte Sachmittel","Veranstaltungsort","Termin"]),
+    TemplateProjectData(name: "Hobby",
+        categories: ["Titel","Idee","Termin", "Ort","Ausrüstung"]),
+    TemplateProjectData(name: "Demo",
+        categories: ["Titel","Anlass","Route","Termin", "Hygienekonzept","Rechtliches"]),
+    TemplateProjectData(name: "Vereingsgründung",
+        categories: ["Titel","Vereinszweck","Vereinsvertrag","Vereinsbeiträge"]),
     ];
 
   static List<TemplateProjectData> templateDiscussionExample = <TemplateProjectData>[

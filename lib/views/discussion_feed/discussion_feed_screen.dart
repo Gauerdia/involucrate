@@ -28,13 +28,13 @@ class _DiscussionFeedScreenState extends State<DiscussionFeedScreen> with Ticker
 
   // The two reference lists
   List<DiscussionListData> exampleBasicDiscussionList = DiscussionListData
-      .discussionListRandom;
+      .discussionListReal;//.discussionListRandom;
   List<DiscussionListData> examplePreferredDiscussionList = DiscussionListData
-      .discussionListPreferred;
+      .discussionListRealPreferred;//.discussionListPreferred;
 
   // The lists which will change depending on the user's input
   List<DiscussionListData> discussionListToShow = DiscussionListData
-      .discussionListRandom;
+      .discussionListReal;//.discussionListRandom;
 
   // the ref list
   List<EngagementListData> exampleBasicEngagementList = EngagementListData.exampleRandomList;

@@ -28,16 +28,10 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
 
   int _page = 0;
 
+  late Size screenSize;
+
   bool publicCommentsOpen = false;
   bool privateCommentsOpen = false;
-
-  List drawerItems = [
-    {"icon": Icons.add,"name": "Feed",},
-    {"icon": Icons.delete, "name": "Your Feed",},
-    {"icon": Icons.delete, "name": "test1",},
-    {"icon": Icons.delete, "name": "test2",},
-    {"icon": Icons.delete, "name": "test3",},
-  ];
 
   List publicComments = [
     {"name": "Peter Zwegat", "imageUrl":"assets/images/profile1.jpg", "content":"I could make a cake!", "date": 1627137747159},
@@ -55,6 +49,7 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
   @override
   Widget build(BuildContext context) {
 
+    screenSize = MediaQuery.of(context).size;
     contentToDisplayList = _createCategoryItemsWidgets();
 
     return Scaffold(
@@ -194,28 +189,10 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
     );
   }
 
-  Widget _buildCategoryContent(int index){
-    return Container(
-      padding: const EdgeInsets.only(top: 16, bottom: 15),
-      child: Column(
-        children: [
-          Text(widget.projectData!.categories[index],
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 26
-              )
-          ),
-          _buildCloudyBackground(widget.projectData!.categories_content[index])
-        ],
-      ),
-    );
-  }
-
   Widget _buildCloudyBackground(String textToDisplay){
     return Padding(
         padding: const EdgeInsets.only(
-            left: 8, right: 8, top: 8, bottom: 16
+            left: 12, right: 12, top: 8, bottom: 16
         ),
         child: InkWell(
           splashColor: Colors.transparent,
@@ -238,7 +215,6 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
         )
     );
   }
-
 
   Widget _buildCategoryContentStack(String textToDisplay){
     return Stack(
@@ -263,7 +239,7 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
               child: Container(
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 16, top: 16, bottom: 16),
+                      left: 16, right:8, top: 16, bottom: 16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,53 +276,6 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
 
   /// Helper functions
 
-  /*
-  List<Widget> _createCategoryItemsWidgets(){
-
-    List<Widget> widgetsToDisplayList = [];
-
-    for(var i=0;i<widget.projectData!.categories.length; i++){
-      Widget headLineToDisplay = Text(widget.projectData!.categories[i],
-          style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 26
-          )
-      );
-      Widget contentToDisplay = _buildCloudyBackground(widget.projectData!.categories_content[i]);
-
-      Widget columnToDisplay = Column(
-        children: [
-          headLineToDisplay,
-          contentToDisplay,
-          Row(
-            children: [
-              GestureDetector(
-                onTap: (){
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData!.categories[i],)),
-                  );
-
-                  },
-                child: Icon(FeatherIcons.messageSquare),
-              )
-            ],
-              mainAxisAlignment: MainAxisAlignment.end,
-          )
-        ],
-      );
-
-      widgetsToDisplayList.add(columnToDisplay);
-
-    }
-
-    return widgetsToDisplayList;
-  }
-
-   */
-
   // Takes the categories and builds a header and a text for each
   List<Widget> _createCategoryItemsWidgets(){
 
@@ -354,33 +283,65 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
 
     for(var i=0;i<widget.projectData!.categories.length; i++){
 
+      var titleLength = widget.projectData!.categories[i].length;
+      double distanceBetweenTitleAndText = 0;
 
-      Widget headLineToDisplay = IntrinsicHeight(
-        child: Stack(
+      if(titleLength < 26) {
+        distanceBetweenTitleAndText = 30;
+      } else {
+        distanceBetweenTitleAndText = 60;
+      }
+
+      Widget headLineToDisplay = Container(
+        width: screenSize.width,
+        child: Column(
           children: [
-            Align(
-                child:
-                Text(widget.projectData!.categories[i],
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 26
+            Row(
+              children: [
+
+                // Column of the title
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left:16),
+                      width: screenSize.width*0.9,
+                      child: Expanded(
+                          child: Text(widget.projectData!.categories[i],
+                            overflow: TextOverflow.clip,
+                            softWrap: true,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 26
+                            ),
+                          ),
+                      )
                     )
-                )
-            ),
-            Positioned(
-                right:10,
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ShowCommentsScreen(title: widget.projectData!.categories[i],)),
-                    );
-                  },
-                  child: Icon(FeatherIcons.messageSquare,
-                    color: Colors.black.withOpacity(0.25),
-                  ),
-                )
+                  ],
+                ),
+
+                // Column of the icon
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 16),
+                      width: screenSize.width*0.1,
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder:
+                                (context) => ShowCommentsScreen(title: widget.projectData!.categories[i],)),
+                          );
+                        },
+                        child: Icon(FeatherIcons.messageSquare,
+                          color: Colors.black.withOpacity(0.25),
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -401,38 +362,9 @@ class _ShowProjectScreenState extends State<ShowProjectScreen> {
     return widgetsToDisplayList;
   }
 
-  Widget _buildListViewOfCategoryItems() {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.projectData!.categories.length,
-        padding: const EdgeInsets.only(top: 8),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildCategoryContent(index);
-        }
-    );
-  }
-
   void togglePublicCommentsOpen(){
     setState(() {
       publicCommentsOpen = !publicCommentsOpen;
     });
   }
-
-  void _buildCommentDialog(){
-    showDialog(
-        context: context,
-        builder: (context){
-          return AlertDialog(
-            title: Text("Comments"),
-            content: Container(
-              child: Text("efwef"),
-            ),
-            actions: [
-              ElevatedButton(onPressed: () {Navigator.pop(context);}, child: Text("Back"))
-            ],
-          );
-        });
-  }
-
 }

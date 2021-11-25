@@ -61,6 +61,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   String new_creator = "Karl Fritz";
   String new_organiser = "Karl Fritz";
   String new_imagePath = "assets/images/abstract_wallpaper_2.jpg";
+  String new_date = "n/a";
+  bool new_regularly = false;
   int new_state = 0;
   String new_topic = "Politics";
   List<String> new_categories = [];
@@ -948,6 +950,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         imagePath: new_imagePath,
         topic: new_topic,
         state: new_state,
+        date: new_date,
+        regularly: new_regularly,
         organiser: new_organiser,
         categories: new_categories,
         categories_content: new_categories_content);

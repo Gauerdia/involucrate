@@ -60,14 +60,39 @@ class _ShowCommentsScreenState extends State<ShowCommentsScreen> {
         children: [
           Row(
             children: [
+              Column(
+                children: [
+                  Container(
+                    width: screenSize.width,
+                    padding: const EdgeInsets.only(top: 32,left: 8),
+                    child: Expanded(
+                      child: Text(widget.title,
+                        overflow: TextOverflow.clip,
+                        softWrap: true,
+                        style: const TextStyle(
+                            fontSize: 30
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              /*
               Padding(
                   padding: const EdgeInsets.only(top: 32,left: 8),
-              child: Text(widget.title,
-                       style: const TextStyle(
-                         fontSize: 30
-                       ),
-                     ),
+              child: Expanded(
+                child: Text(widget.title,
+                  overflow: TextOverflow.clip,
+                  softWrap: true,
+                  style: const TextStyle(
+                      fontSize: 30
+                  ),
+                ),
+              ),
               )
+
+
+               */
             ],
           ),
 

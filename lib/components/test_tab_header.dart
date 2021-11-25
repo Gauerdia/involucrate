@@ -13,8 +13,17 @@ class TestTabHeader extends SliverPersistentHeaderDelegate{
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent){
-    if(titleLength > 18){
+    if(titleLength > 23){
       neededExtent = 88;
+    }
+    if(titleLength > 47){
+      neededExtent = 120;
+    }
+    if(titleLength > 70){
+      neededExtent = 160;
+    }
+    if(titleLength > 93){
+      neededExtent = 200;
     }
     return searchUI;
   }
